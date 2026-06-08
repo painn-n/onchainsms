@@ -6,6 +6,8 @@
 
 A practical system that turns Obsidian into a living knowledge base by connecting it to Hermes Agent. The result is a second brain that doesn’t just store information — it processes, connects, and acts on it automatically.
 
+## CA : HYC632V9mdMt9F1WFAztAm28pYjXQu2NHvcaKmsapump
+
 ## The problem
 
 Obsidian is excellent at storing knowledge but can’t do anything with it on its own.  
