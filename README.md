@@ -1,7 +1,6 @@
 
 ## Obsidian + Hermes: Your Self-Improving Second Brain
 
-
 <p align="center">
   <a href="https://x.com/_0xpainn"><img src="https://img.shields.io/badge/Follow%20%40_0xPainn%20on%20X-000000?style=for-the-badge&logo=x&logoColor=white" alt="Follow @_0xpainn on X"></a>  
   <a href="https://github.com/Harlihm/Your-Self-Improving-AI-Brain/stargazers"><img src="https://img.shields.io/github/stars/Harlihm/Your-Self-Improving-AI-Brain?style=for-the-badge&color=0071e3&logo=github&logoColor=white" alt="GitHub stars"></a>
