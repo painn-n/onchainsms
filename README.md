@@ -1,4 +1,3 @@
-
 ## Obsidian + Hermes: Your Self-Improving Second Brain
 
 <p align="center">
@@ -11,109 +10,105 @@
 
 ![Self-Improving AI Brain Logo](assets/logo.jpg)
 
-A practical system that turns Obsidian into a living knowledge base by connecting it to Hermes Agent. The result is a second brain that doesn’t just store information — it processes, connects, and acts on it automatically.
+## What this is
+
+A second brain that **stores** knowledge in Obsidian and **acts** on it with Hermes Agent.
+
+You dump ideas into an inbox, track projects, take daily notes. Hermes reads that vault, runs skills (daily brief, inbox cleanup, project health, weekly review), and writes results back into your files. Over time, lessons get saved so the system gets better the more you use it.
+
+Obsidian = permanent memory. Hermes = the worker. OpenRouter = the AI models (free tier works).
 
 ## The problem
 
-Obsidian is excellent at storing knowledge but can’t do anything with it on its own.  
-Most AI agents can execute tasks but lose all context between sessions.  
+- Obsidian is great at storing notes, but it can't do anything with them.
+- AI chat tools can do work, but they forget everything between sessions.
+- Most "second brain" setups become graveyards: capture is easy, follow-through isn't.
 
-This setup bridges both worlds: permanent memory in Obsidian + reliable execution through Hermes, running on Grok via X Premium.
+This bridges both sides: lasting memory in your vault + an agent that reads it, acts on it, and writes what it learned back.
+
+## Install
+
+**1. Install [Node.js](https://nodejs.org) (v18+), [Obsidian](https://obsidian.md), and a free [OpenRouter](https://openrouter.ai) API key.**
+
+**2. Install Hermes and this repo:**
+
+```shell
+npm install -g hermes-agent
+git clone https://github.com/Harlihm/Your-Self-Improving-AI-Brain.git
+cd Your-Self-Improving-AI-Brain
+npm run setup
+```
+
+**3. Add your key** (Mac / Linux):
+
+```shell
+echo 'export OPENROUTER_API_KEY="sk-or-..."' >> ~/.zshrc
+source ~/.zshrc
+```
+
+Windows: add a user environment variable named `OPENROUTER_API_KEY`.
+
+**4. Open the vault**
+
+Obsidian → **Open folder as vault** → `~/Documents/Brain`
+
+Edit `SYSTEM.md` with who you are and what you're working on.
+
+**5. Run it**
+
+```shell
+hermes
+```
+
+Then try:
+
+```
+use the daily-brief skill
+use the inbox-processor skill
+use the project-health skill
+use the weekly-review skill
+use the learn skill
+```
+
+
 
 ## What you get
 
-- A clean, opinionated Obsidian vault structure designed for automation
-- Hermes skills that read from and write back to your vault
-- Automated daily briefs, inbox processing, project tracking, and weekly synthesis
-- Fully local-first workflow using `Grok` (no Claude required)
 
-## Vault structure
-```
-YourVault/
-├── 00 - INBOX/                 # Drop everything here
-├── 01 - NOTES/
-│   ├── permanent/              # Atomic, evergreen notes
-│   ├── daily/                  # Daily notes
-│   └── meetings/
-├── 02 - PROJECTS/              # Active work
-├── 03 - RESOURCES/             # References & sources
-├── 04 - HERMES-OUTPUTS/        # Everything Hermes generates
-│   ├── briefings/
-│   ├── analyses/
-│   ├── reviews/
-│   └── syntheses/
-├── 05 - ARCHIVE/
-└── 06 - SYSTEM/
-    └── SYSTEM.md               # Master context file Hermes reads
-```
+| Folder             | Purpose                     |
+| ------------------ | --------------------------- |
+| `inbox/`           | Capture anything            |
+| `notes/`           | Lasting knowledge           |
+| `projects/`        | Active work                 |
+| `daily/`           | Daily notes                 |
+| `outputs/`         | Hermes briefs and reviews   |
+| `lessons.md`       | What improved over time     |
+| `modules/content/` | Optional X content workflow |
 
-## Core skills
 
-- inbox-processor — Automatically organizes anything dropped in INBOX
-- project-health — Weekly status reports on active projects
-- connection-finder — Surfaces hidden links between notes
-- weekly-synthesis — Generates weekly reviews and priority updates
-- vault-morning-brief — Creates daily briefings (with optional image)
 
-## Setup
 
-0. Install Obsidian
-Download and install Obsidian from the official site:  
-`https://obsidian.md/`
-It’s free and available for macOS, Windows, and Linux.
+## Skills
 
-1. Install Hermes Agent
-```bash
-curl -fsSL https://raw.githubusercontent.com/NousResearch/hermes-agent/main/scripts/install.sh | bash
-```
-Hermes Agent repo: https://github.com/NousResearch/hermes-agent
+- **inbox-processor** — sorts the inbox into notes and projects
+- **daily-brief** — today's focus and top actions
+- **project-health** — blockers and stale work
+- **weekly-review** — what moved, what stalled, next focus
+- **learn** — writes a lesson back into `lessons.md`
 
-2. Check installation
-```bash
-hermes --version
-hermes doctor
+
+
+## Optional: content module
+
+If you publish on X, see `modules/content/README.md` inside the vault.
+
+```shell
+npm run new-post -- "topic"
+npm run log -- <slug> --views N --likes N --bookmarks N
+npm run archive -- <slug>
 ```
 
-3. Switch to Grok (X Premium)
-```bash
-hermes model
-```
-Select a Grok model (`grok-4.3` or similar) through the `xai-oauth `provider.
 
-
-4. Give Hermes access to your vault
-```bash
-hermes mcp add filesystem --command 'npx -y @modelcontextprotocol/server-filesystem /full/path/to/your/vault'
-hermes mcp configure filesystem
-```
-
-5. Create SYSTEM.md
-Build your vault following the structure above, then create 
-`06 - SYSTEM/SYSTEM.md` with your personal context, priorities, and rules.
-
-6. Add the skills
-Drop the skill files into  `~/.hermes/skills/.`
-
-## How it actually works
-
-1. `SYSTEM.md` loads as persistent context every time Hermes runs a skill
-2. The Filesystem MCP gives Hermes read/write access to your entire vault
-3. Skills follow a simple loop: Read → Reason → Write results back
-4. Grok handles all reasoning through your X Premium connection
-
-## Next steps
-
-- Add automatic image generation for briefs
-- Build a Research Converter skill
-- Create an X posting workflow
-- Add daily note templates
-
-## Stack
-
-- Obsidian — Knowledge storage
-- Hermes Agent — Execution & automation
-- Grok-4.3 (via X Premium) — Reasoning model
-- Filesystem MCP — Vault access
 
 ## License
 

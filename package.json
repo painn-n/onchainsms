@@ -1,0 +1,17 @@
+{
+  "name": "your-self-improving-ai-brain",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Obsidian + Hermes second brain that stores knowledge and acts on it.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "setup": "node scripts/setup.mjs",
+    "new-post": "node scripts/new-post.mjs",
+    "log": "node scripts/log-post.mjs",
+    "archive": "node scripts/archive-post.mjs"
+  },
+  "license": "MIT"
+}

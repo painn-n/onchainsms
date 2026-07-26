@@ -1,3 +1,18 @@
 .DS_Store
 pycache/
 *.pyc
+
+node_modules/
+npm-debug.log*
+
+# never commit keys
+.env
+.env.*
+*.pem
+
+# obsidian workspace state, if you ever keep a vault inside the repo
+.obsidian/workspace*
+.obsidian/cache
+
+# local scratch
+.tmp-test/
