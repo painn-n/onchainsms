@@ -1,0 +1,18 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /messages/{messageId} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /authChallenges/{challengeId} {
+      allow read, write: if false;
+    }
+    match /processedTransactions/{txHash} {
+      allow read, write: if false;
+    }
+    match /paymentQuotes/{quoteId} {
+      allow read, write: if false;
+    }
+  }
+}

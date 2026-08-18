@@ -1,115 +1,64 @@
-## Obsidian + Hermes: Your Self-Improving Ai Brain
+# Onchain SMS
 
-<p align="center">
-  <a href="https://x.com/_0xpainn"><img src="https://img.shields.io/badge/Follow%20%40_0xPainn%20on%20X-000000?style=for-the-badge&logo=x&logoColor=white" alt="Follow @_0xpainn on X"></a>  
-  <a href="https://github.com/Harlihm/Your-Self-Improving-AI-Brain/stargazers"><img src="https://img.shields.io/github/stars/Harlihm/Your-Self-Improving-AI-Brain?style=for-the-badge&color=0071e3&logo=github&logoColor=white" alt="GitHub stars"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-0071e3?style=for-the-badge" alt="MIT License"></a>
-</p>
+Public wallet notes on Robinhood Chain and Base. Each send is one EVM transaction that:
 
-![Hermes-Agent + Obsidian Header](assets/header.jpg)
+1. pays a small ETH fee to the treasury; and
+2. embeds the recipient and message in calldata.
 
-![Self-Improving AI Brain Logo](assets/logo.jpg)
+Firebase authenticates wallets and indexes confirmed txs for inbox and sent views. The chain is the source of truth; Firebase is an index.
 
-## What this is
+Messages are public. Do not post secrets or personal data.
 
-A second brain that **stores** knowledge in Obsidian and **acts** on it with Hermes Agent.
+## Architecture
 
-You dump ideas into an inbox, track projects, take daily notes. Hermes reads that vault, runs skills (daily brief, inbox cleanup, project health, weekly review), and writes results back into your files. Over time, lessons get saved so the system gets better the more you use it.
+- Wagmi connects MetaMask, Rabby, Robinhood Wallet, and WalletConnect wallets.
+- A signed nonce proves ownership and becomes the Firebase Auth UID (lowercase address).
+- The browser submits one tx with the `0.00025 ETH` fee and encoded message.
+- A Cloud Function checks the receipt, sender, treasury, fee, chain, and payload.
+- Firestore stores only verified txs and rejects hash reuse.
+- Clients read Firestore; only Admin SDK Cloud Functions write index entries.
 
-Obsidian = permanent memory. Hermes = the worker. OpenRouter = the AI models (free tier works).
+## Configuration
 
-## The problem
+Copy `.env.example` to `.env.local` and set Firebase web config, Reown project ID, treasury, and fee:
 
-- Obsidian is great at storing notes, but it can't do anything with them.
-- AI chat tools can do work, but they forget everything between sessions.
-- Most "second brain" setups become graveyards: capture is easy, follow-through isn't.
-
-This bridges both sides: lasting memory in your vault + an agent that reads it, acts on it, and writes what it learned back.
-
-## Install
-
-**1. Install [Node.js](https://nodejs.org) (v18+), [Obsidian](https://obsidian.md), and a free [OpenRouter](https://openrouter.ai) API key.**
-
-**2. Install Hermes and this repo:**
-
-```shell
-npm install -g hermes-agent
-git clone https://github.com/Harlihm/Your-Self-Improving-AI-Brain.git
-cd Your-Self-Improving-AI-Brain
-npm run setup
+```dotenv
+VITE_REOWN_PROJECT_ID=
+VITE_FIREBASE_API_KEY=
+VITE_FIREBASE_AUTH_DOMAIN=
+VITE_FIREBASE_PROJECT_ID=
+VITE_FIREBASE_STORAGE_BUCKET=
+VITE_FIREBASE_MESSAGING_SENDER_ID=
+VITE_FIREBASE_APP_ID=
+VITE_TREASURY_ADDRESS=0x...
+VITE_MESSAGE_FEE_ETH=0.00025
 ```
 
-**3. Add your key** (Mac / Linux):
+Copy `functions/.env.example` to `functions/.env.<firebase-project-id>`:
 
-```shell
-echo 'export OPENROUTER_API_KEY="sk-or-..."' >> ~/.zshrc
-source ~/.zshrc
+```dotenv
+TREASURY_ADDRESS=0x...
+MESSAGE_FEE_ETH_WEI=250000000000000
+ROBINHOOD_RPC_URL=https://your-production-rpc
+BASE_RPC_URL=https://your-production-rpc
 ```
 
-Windows: add a user environment variable named `OPENROUTER_API_KEY`.
+Deploy:
 
-**4. Open the vault**
-
-Obsidian → **Open folder as vault** → `~/Documents/Brain`
-
-Edit `SYSTEM.md` with who you are and what you're working on.
-
-**5. Run it**
-
-```shell
-hermes
+```bash
+npm run build
+firebase deploy --only functions,firestore,hosting
 ```
 
-Then try:
+## Development
 
-```
-use the daily-brief skill
-use the inbox-processor skill
-use the project-health skill
-use the weekly-review skill
-use the learn skill
+```bash
+npm install
+npm install --prefix functions
+npm run dev
 ```
 
-
-
-## What you get
-
-
-| Folder             | Purpose                     |
-| ------------------ | --------------------------- |
-| `inbox/`           | Capture anything            |
-| `notes/`           | Lasting knowledge           |
-| `projects/`        | Active work                 |
-| `daily/`           | Daily notes                 |
-| `outputs/`         | Hermes briefs and reviews   |
-| `lessons.md`       | What improved over time     |
-| `modules/content/` | Optional X content workflow |
-
-
-
-
-## Skills
-
-- **inbox-processor** — sorts the inbox into notes and projects
-- **daily-brief** — today's focus and top actions
-- **project-health** — blockers and stale work
-- **weekly-review** — what moved, what stalled, next focus
-- **learn** — writes a lesson back into `lessons.md`
-
-
-
-## Optional: content module
-
-If you publish on X, see `modules/content/README.md` inside the vault.
-
-```shell
-npm run new-post -- "topic"
-npm run log -- <slug> --views N --likes N --bookmarks N
-npm run archive -- <slug>
-```
-
-
-
-## License
-
-MIT
+| Network | Chain ID | Explorer |
+| --- | ---: | --- |
+| Robinhood Chain | 4663 | https://robinhoodchain.blockscout.com |
+| Base | 8453 | https://base.blockscout.com |

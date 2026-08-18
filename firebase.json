@@ -1,0 +1,18 @@
+{
+  "functions": { "source": "functions" },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  }, 
+  "hosting": {
+    "public": "dist",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      { "source": "/api/authChallenge", "function": "authChallenge" },
+      { "source": "/api/authVerify", "function": "authVerify" },
+      { "source": "/api/paymentQuote", "function": "paymentQuote" },
+      { "source": "/api/indexMessage", "function": "indexMessage" },
+      { "source": "**", "destination": "/index.html" }
+    ]
+  }
+}
