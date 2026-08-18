@@ -4,7 +4,7 @@ pycache/
 
 node_modules/
 npm-debug.log*
-
+ 
 # never commit keys
 .env
 .env.*
